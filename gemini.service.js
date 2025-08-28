@@ -6,9 +6,10 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
 async function ask(chatId, message){
     try {
+        // Load chat from local database
         const db = new FSDB(`./db/${chatId}.json`, false);
         const history = db.get("history") || [];
-
+        // Initialize user message that includes text and/or image
         const newMessage = {
             role: "user",
             parts: [],
@@ -17,6 +18,7 @@ async function ask(chatId, message){
             newMessage.parts.push({ text: message.text });
         };
         if (message.image_url) {
+            // Makes the image into a form that is compatible with Gemini
             const { data, mimeType } = await downloadImage(message.image_url);
             newMessage.parts.push({ 
                 inlineData: {
@@ -25,17 +27,20 @@ async function ask(chatId, message){
                 },
             });
         }
+        // Add new user message to history
         history.push(newMessage);
-
+        // Start chat with Gemini model
         const chat = model.startChat({
             history: history.slice(),
             generationConfig: {
-                maxOutoutTokens: 1000.
+                maxOutoutTokens: 1000,
             },
         });
+        // Send the new message to gemini
         const result = await chat.sendMessage(newMessage.parts);
         const response = await result.response;
         const text = response.text();
+        // Save models response to history
         history.push({
             role: "model",
             parts: [{ text }]

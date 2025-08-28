@@ -18,6 +18,7 @@ app.use(bodyParser.json());
             return res.status(400).json({ error: "Message is missing."});
         }
         console.log(`Received message: ${JSON.stringify(message)} for chat ID: ${chatId}`);
+        // Process the message using Gemini API
         const response = await ask(chatId, message);
         return res.json({ response });
     });
