@@ -22,4 +22,8 @@ app.use(bodyParser.json());
         const response = await ask(chatId, message);
         return res.json({ response });
     });
+
+    app.listen(8080, () => {
+        console.log("Server running on port 8080");
+    })
 })();
