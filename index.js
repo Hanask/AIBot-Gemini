@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const { ask } = require("./gemini.service");
+// const { ask } = require("./claude.service"); // Uncomment this to use claude model instead
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());

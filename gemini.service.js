@@ -1,6 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { FSDB } = require("file-system-db");
 const { downloadImage } = require("./utilities.service");
+// To set the key go to: https://aistudio.google.com/apikey
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
